@@ -135,9 +135,13 @@ class QueryEngine {
   // valid change stream query. Returns corresponding error status if current
   // query is an invalid regular query, a non-change stream tvf query or an
   // invalid change stream tvf query.
-  static absl::StatusOr<ChangeStreamQueryValidator::ChangeStreamMetadata>
+  //
+  // Uses this engine's FunctionCatalog and TypeFactory instead of building a
+  // new FunctionCatalog, which registers the whole set of built-in functions,
+  // on every call.
+  absl::StatusOr<ChangeStreamQueryValidator::ChangeStreamMetadata>
   TryGetChangeStreamMetadata(const Query& query, const Schema* schema,
-                             bool in_read_write_txn = false);
+                             bool in_read_write_txn = false) const;
 
   googlesql::TypeFactory* type_factory() const { return type_factory_; }
 
